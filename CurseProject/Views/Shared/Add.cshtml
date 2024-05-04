@@ -1,4 +1,4 @@
-@model Triangle
+@model AddViewModel
 
 <html>
 <head>
@@ -19,7 +19,7 @@
 </head>
 <body>
 <h2>Triangles</h2>
-@if (Model == null)
+@if (Model.Triangle == null)
 {
     <form method="post" action="SaveTriangle">
         <p>name: <input name="name"/></p>
@@ -29,14 +29,31 @@
         <input type="submit" value="Send"/>
     </form>
 }
-@if (Model != null)
+
+@if (Model.Triangle != null && !Model.Valid)
+{
+    <h1>What's wrong</h1>
+}
+
+@if (Model.Triangle != null && Model.IsUpdate)
 {
     <form method="post" action="UpdateTriangle">
-        <p>id <input name="id" value=@Model.id> </p>
-        <p>name: <input name="name" value=@Model.name /></p>
-        <p>A: <input name="A" value=@Model.a /></p>
-        <p>B: <input name="B" value=@Model.b /></p>
-        <p>C: <input name="C" value=@Model.c /></p>
+        <p>id <input name="id" value=@Model.Triangle.Id> </p>
+        <p>name: <input name="name" value=@Model.Triangle.name></p>
+        <p>A: <input name="A" value=@Model.Triangle.A></p>
+        <p>B: <input name="B" value=@Model.Triangle.B></p>
+        <p>C: <input name="C" value=@Model.Triangle.C></p>
+        <input type="submit" value="Send"/>
+    </form>
+}
+
+@if (Model.Triangle != null && !Model.IsUpdate)
+{
+    <form method="post" action="SaveTriangle">
+        <p>name: <input name="name" value=@Model.Triangle.name></p>
+        <p>A: <input name="A" value=@Model.Triangle.A></p>
+        <p>B: <input name="B" value=@Model.Triangle.B></p>
+        <p>C: <input name="C" value=@Model.Triangle.C></p>
         <input type="submit" value="Send"/>
     </form>
 }

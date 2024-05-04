@@ -1,25 +1,14 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CurseProject.Models;
 
 namespace CurseProject.Controllers;
 
-public class HomeController : Controller
+public class HomeController(ITriangleRepository triangleRepository) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IUserRepository _userRepository;
-    private readonly ITriangleRepository _triangleRepository;
-
-    public HomeController(ILogger<HomeController> logger, 
-        IUserRepository userRepository, ITriangleRepository triangleRepository)
-    {
-        _triangleRepository = triangleRepository;
-        _userRepository = userRepository;
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        var triangles = _triangleRepository.GetAllTriangles();
+        var triangles = triangleRepository.GetAllTriangles();
         return View("Index", triangles);
     }
 
@@ -40,8 +29,13 @@ public class HomeController : Controller
     
     public IActionResult Update(long idTriangle)
     {
-        var triangle = _triangleRepository.GetTriangleById(idTriangle);
-        return View("Add", triangle);
+        var triangle = triangleRepository.GetTriangleById(idTriangle);
+        return View("Add", new AddViewModel()
+        {
+            Valid = true,
+            Triangle = triangle,
+            IsUpdate = true
+        });
     }
     
     public IActionResult UpdateTriangle(Triangle model)
@@ -50,14 +44,23 @@ public class HomeController : Controller
         {
             var triangle = new Triangle
             {
-                id = model.id,
+                Id = model.Id,
                 name = model.name,
-                a = model.a,
-                b = model.b,
-                c = model.c
+                A = model.A,
+                B = model.B,
+                C = model.C
             };
+            triangle.AreaCalculation();
+            if(double.IsNaN(triangle.Square) || triangle.Square < 1)
+            {
+                return View("Add", new AddViewModel()
+                {
+                    Triangle = triangle,
+                    IsUpdate = true
+                });
+            }
 
-            _triangleRepository.UpdateTriangle(triangle.id, triangle);
+            triangleRepository.UpdateTriangle(triangle.Id, triangle);
 
             return RedirectToAction("Index", "Home");
         }
@@ -67,7 +70,7 @@ public class HomeController : Controller
     
     public IActionResult Delete(long idTriangle)
     {
-        _triangleRepository.DeleteTriangle(idTriangle);
+        triangleRepository.DeleteTriangle(idTriangle);
         return RedirectToAction("Index");
     }
     
@@ -86,9 +89,9 @@ public class HomeController : Controller
         return RedirectToAction("Third Task", "Tasks");
     }
     
-    // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    // public IActionResult Error()
-    // {
-    //     return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    // }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
 }

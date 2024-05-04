@@ -22,8 +22,8 @@ public class PostgresDbContext : DbContext
         { 
             modelBuilder.Entity<Triangle>()
                 .HasData(
-                    new Triangle { id = 1, name = "wq", a = 1, b = 2, c = 3},
-                    new Triangle { id = 2, name = "wq", a = 2, b = 2, c = 2}
+                    new Triangle { Id = 1, name = "wq", A = 1, B = 2, C = 3, Square = 6},
+                    new Triangle { Id = 2, name = "wq", A = 2, B = 2, C = 2, Square = 6}
                     );
             modelBuilder.Entity<User>()
                 .HasData(

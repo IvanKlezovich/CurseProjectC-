@@ -40,9 +40,11 @@ public class TriangleRepository : ITriangleRepository
         if (triangle != null)
         {
             triangle.name = newTriangle.name;
-            triangle.a = newTriangle.a;
-            triangle.b = newTriangle.b;
-            triangle.c = newTriangle.c;
+            triangle.A = newTriangle.A;
+            triangle.B = newTriangle.B;
+            triangle.C = newTriangle.C;
+            newTriangle.AreaCalculation();
+            triangle.Square = newTriangle.Square;
         }
 
         _postgresDbContext.SaveChanges();

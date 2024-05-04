@@ -3,19 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CurseProject.Controllers;
 
-public class AddController : Controller
+public class AddController(ITriangleRepository triangleRepository) : Controller
 {
-
-    private readonly ITriangleRepository _triangleRepository;
-
-    public AddController(ITriangleRepository triangleRepository)
-    {
-        _triangleRepository = triangleRepository;
-    }
-    
     public IActionResult AddTriangle()
     {
-        return View("Add");
+        return View("Add", new AddViewModel()
+        {
+            Triangle = null
+        });
     }
     
     [HttpPost]
@@ -26,12 +21,20 @@ public class AddController : Controller
             var triangle = new Triangle
             {
                 name = model.name,
-                a = model.a,
-                b = model.b,
-                c = model.c
+                A = model.A,
+                B = model.B,
+                C = model.C
             };
+            triangle.AreaCalculation();
+            if(double.IsNaN(triangle.Square) || triangle.Square < 1)
+            {
+                return View("Add", new AddViewModel()
+                {
+                    Triangle = triangle
+                });
+            }
 
-            _triangleRepository.AddTriangle(triangle);
+            triangleRepository.AddTriangle(triangle);
 
             return RedirectToAction("Index", "Home");
         }
@@ -39,30 +42,4 @@ public class AddController : Controller
         return View("Add");
     }
     
-    public IActionResult Update(long id)
-    {
-        var triangle = _triangleRepository.GetTriangleById(id);
-        return View("Add", triangle);
-    }
-
-    public IActionResult UpdateTriangle(Triangle model)
-    {
-        if (ModelState.IsValid)
-        {
-            var triangle = new Triangle
-            {
-                id = model.id,
-                name = model.name,
-                a = model.a,
-                b = model.b,
-                c = model.c
-            };
-
-            _triangleRepository.UpdateTriangle(triangle.id, triangle);
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        return View("Add");
-    }
 }

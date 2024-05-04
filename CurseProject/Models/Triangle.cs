@@ -2,11 +2,15 @@ namespace CurseProject.Models;
 
 public class Triangle
 {
-    public long id { get; set; }
+    public long Id { get; init; }
     public string name { get; set; }
-    public long a { get; set; }
-    public long b { get; set; }
-    public long c { get; set; }
-    //public Double square { get; set; }
-    
+    public long A { get; set; }
+    public long B { get; set; }
+    public long C { get; set; }
+    public Double Square { get; set; }
+    public void AreaCalculation()
+    {
+        var p = (A + B + C) / 2;
+        Square = Math.Sqrt(p*(p-A)*(p-B)*(p-C));
+    }
 }

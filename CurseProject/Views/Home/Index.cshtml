@@ -7,6 +7,7 @@
 
 @model IEnumerable<Triangle>
 
+
 <html lang="en">
 <head>
     <link rel="stylesheet" href="~/css/site.css"/>
@@ -50,18 +51,18 @@
         {
             <tr>
                 <td>@triangle.name</td>
-                <td>@triangle.a</td>
-                <td>@triangle.b</td>
-                <td>@triangle.c</td>
+                <td>@triangle.A</td>
+                <td>@triangle.B</td>
+                <td>@triangle.C</td>
                 <td>
                     @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
                     {
                         <form>
                             <button class="button">
-                                <a asp-controller="Home" asp-action="Update" asp-route-idTriangle="@triangle.id">Update</a>
+                                <a asp-controller="Home" asp-action="Update" asp-route-idTriangle="@triangle.Id">Update</a>
                             </button>
                             <button class="button">
-                                <a asp-controller="Home" asp-action="Delete" asp-route-idTriangle="@triangle.id">Delete</a>
+                                <a asp-controller="Home" asp-action="Delete" asp-route-idTriangle="@triangle.Id">Delete</a>
                             </button>
                         </form>
                     }
