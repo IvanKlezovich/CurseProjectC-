@@ -1,0 +1,58 @@
+﻿@using System.Security.Claims
+@using CurseProject.Models
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        head {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+    <form>
+        <div class="button-container">
+            @if (Context.User.FindFirstValue(ClaimTypes.Email) is null)
+            {
+                <button asp-controller="Home" asp-action="GetLogin">Login</button>
+                <button asp-controller="Home" asp-action="GetSingIn">SingIn</button>
+            }
+            @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
+            {
+                <button asp-controller="Tasks" asp-action="FirstTask">First Task</button>
+                <button asp-controller="Tasks" asp-action="SecondTask">Second Task</button>
+                <button asp-controller="Tasks" asp-action="ThirdTask">Third Task</button>
+            }
+        </div>
+    </form>
+</head>
+
+<body>
+<div class="container">
+    @RenderBody()
+</div>
+</body>
+
+</html>

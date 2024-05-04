@@ -1,0 +1,27 @@
+@model CurseProject.Models.User
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<div>
+    <form style="max-width: 200px" asp-controller="Auth" asp-action="PostSingIn" method="post">
+        <div>
+            <label asp-for="Email"></label><br/>
+            <input style="width: 100%" asp-for="Email"/><br/>
+            <span style="color: red" asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="Password"></label><br/>
+            <input style="width: 100%" asp-for="Password"/><br/>
+            <span style="color: red" asp-validation-for="Password"></span>
+        </div>
+        <br/>
+        <button style="margin: 0 auto;display: block;" type="submit">Registered</button>
+    </form>
+</div>
+</body>
+</html>
