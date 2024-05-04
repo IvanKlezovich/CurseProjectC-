@@ -41,9 +41,9 @@
             }
             @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
             {
-                <button asp-controller="Tasks" asp-action="FirstTask">First Task</button>
-                <button asp-controller="Tasks" asp-action="SecondTask">Second Task</button>
-                <button asp-controller="Tasks" asp-action="ThirdTask">Third Task</button>
+                <button asp-controller="FirstTask" asp-action="FirstTask">First Task</button>
+                <button asp-controller="SecondTask" asp-action="SecondTask">Second Task</button>
+                <button asp-controller="ThirdTask" asp-action="ThirdTask">Third Task</button>
             }
         </div>
     </form>
