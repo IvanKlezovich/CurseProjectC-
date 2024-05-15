@@ -10,7 +10,7 @@ public class Triangle
     public Double Square { get; set; }
     public void AreaCalculation()
     {
-        var p = (A + B + C) / 2;
+        var p = (A + B + C) / 2.0;
         Square = Math.Sqrt(p*(p-A)*(p-B)*(p-C));
     }
 }

@@ -4,21 +4,13 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace CurseProject.Service;
 
-public class AuthService : IAuthService
+public class AuthService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+    : IAuthService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
-    {
-        _userRepository = userRepository;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     public async Task SignInWithDefaultPrincipalAsync(User user, string authenticationScheme)
     {
-        if (!_userRepository.UserExists(user.Id)){
-            _userRepository.CreateUser(user);
+        if (!userRepository.UserExists(user.Id)){
+            userRepository.CreateUser(user);
         }
         var claims = new List<Claim> {
             new Claim(ClaimTypes.Email, user.Email),
@@ -26,24 +18,24 @@ public class AuthService : IAuthService
         var claimsIdentity = new ClaimsIdentity(claims, authenticationScheme);
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         
-        await _httpContextAccessor.HttpContext.SignInAsync(authenticationScheme, claimsPrincipal);
+        await httpContextAccessor.HttpContext.SignInAsync(authenticationScheme, claimsPrincipal);
     }
 
     public async Task SignInWithDefaultPrincipalAsync(LoginUser loginUserViewModel, string authenticationScheme)
     {
-        var user = _userRepository.GetByEmail(loginUserViewModel.Email) ?? throw new Exception();
+        var user = userRepository.GetByEmail(loginUserViewModel.Email) ?? throw new Exception();
         
         await SignInWithDefaultPrincipalAsync(user, authenticationScheme);
     }
 
     public async Task SignOutAsync(string authenticationScheme)
     {
-        await _httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
+        await httpContextAccessor.HttpContext.SignOutAsync(authenticationScheme);
     }
 
     public bool VerifyUserLogin(string email, string userPassword)
     {
-        var user = _userRepository.GetByEmail(email) ?? throw new Exception();
+        var user = userRepository.GetByEmail(email) ?? throw new Exception();
         
         return user.Email == email && user.Password == userPassword;
     }

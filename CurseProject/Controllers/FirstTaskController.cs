@@ -57,6 +57,4 @@ public class FirstTaskController(ITriangleRepository triangleRepository) : Contr
             });
         }
     }
-    
-    
 }

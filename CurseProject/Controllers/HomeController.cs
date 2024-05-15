@@ -76,17 +76,17 @@ public class HomeController(ITriangleRepository triangleRepository) : Controller
     
     public IActionResult GetFirstTask()
     {
-        return RedirectToAction("FirstTask", "FirstTasks");
+        return RedirectToAction("FirstTask", "FirstTask");
     }
     
     public IActionResult GetSecondTask()
     {
-        return RedirectToAction("Second Task", "FirstTasks");
+        return RedirectToAction("SecondTask", "SecondTask");
     }
     
     public IActionResult GetThirdTask()
     {
-        return RedirectToAction("Third Task", "FirstTasks");
+        return RedirectToAction("ThirdTask", "ThirdTask");
     }
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

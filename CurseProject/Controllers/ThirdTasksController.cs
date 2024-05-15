@@ -31,7 +31,8 @@ public class ThirdTaskController(ITriangleRepository triangleRepository) : Contr
         
         return View("ThirdTask", new TasksViewModel()
         {
-            Triangles = answer
+            Triangles = answer,
+            Square = radius
         });
     }
 }

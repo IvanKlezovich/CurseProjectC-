@@ -4,38 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurseProject.Repository;
 
-public class TriangleRepository : ITriangleRepository
+public class TriangleRepository(PostgresDbContext postgresDbContext) : ITriangleRepository
 {
-
-    private readonly PostgresDbContext _postgresDbContext;
-    
-    public TriangleRepository(PostgresDbContext postgresDbContext)
-    {
-        _postgresDbContext = postgresDbContext;
-    }
     public IEnumerable<Triangle> GetAllTriangles()
     {
-        return _postgresDbContext.Triangles;
+        return postgresDbContext.Triangles;
     }
 
     public Triangle GetTriangleById(long id)
     {
         //return _postgresDbContext.Triangles.FirstOrDefault(t => t.id == id) ?? throw new Exception();
-        return _postgresDbContext.Triangles.Find(id) ?? throw new Exception($"Triangle with ID {id} not found.");
+        return postgresDbContext.Triangles.Find(id) ?? throw new Exception($"Triangle with ID {id} not found.");
     }
 
     public void DeleteTriangle(long id)
     {
         var triangle = GetTriangleById(id);
         
-        _postgresDbContext.Triangles.Remove(triangle);
+        postgresDbContext.Triangles.Remove(triangle);
         
-        _postgresDbContext.SaveChanges();
+        postgresDbContext.SaveChanges();
     }
 
     public void UpdateTriangle(long id, Triangle newTriangle)
     {
-        var triangle = _postgresDbContext.Triangles.Find(id);
+        var triangle = postgresDbContext.Triangles.Find(id);
         
         if (triangle != null)
         {
@@ -47,13 +40,13 @@ public class TriangleRepository : ITriangleRepository
             triangle.Square = newTriangle.Square;
         }
 
-        _postgresDbContext.SaveChanges();
+        postgresDbContext.SaveChanges();
     }
     
     public void AddTriangle(Triangle newTriangle)
     {
-        _postgresDbContext.Triangles.Add(newTriangle);
+        postgresDbContext.Triangles.Add(newTriangle);
         
-        _postgresDbContext.SaveChanges();
+        postgresDbContext.SaveChanges();
     }
 }

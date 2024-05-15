@@ -10,8 +10,6 @@
 
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="~/css/site.css"/>
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -23,16 +21,28 @@
         td {
             text-align: center;
         }
+        .add-button{
+            color: #fff;
+            background-color: green;
+        }
+        .update-button{
+            color: #fff;
+            background-color: yellow;
+        }
+        .delete-button{
+            color: #fff;
+            background-color: red;
+        }
+        .add-button-div{
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 <div >
-    @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
-    {
-        <button class="button">
-            <a asp-controller="Add" asp-action="AddTriangle" asp-route-idProduct="">Create</a>
-        </button>
-    }
     <table>
         <thead class="thead-dark">
         <tr>
@@ -58,10 +68,10 @@
                     @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
                     {
                         <form>
-                            <button class="button">
+                            <button class="update-button">
                                 <a asp-controller="Home" asp-action="Update" asp-route-idTriangle="@triangle.Id">Update</a>
                             </button>
-                            <button class="button">
+                            <button class="delete-button">
                                 <a asp-controller="Home" asp-action="Delete" asp-route-idTriangle="@triangle.Id">Delete</a>
                             </button>
                         </form>
@@ -71,6 +81,14 @@
         }
         </tbody>
     </table>
+    @if (Context.User.FindFirstValue(ClaimTypes.Email) is not null)
+    {
+        <div class="add-button-div">
+            <button class="add-button">
+                <a asp-controller="Add" asp-action="AddTriangle">Create</a>
+            </button>
+        </div>    
+    }
     @* <pagination page-info="@Model.PageInfo" page-action="GetCatalog"></pagination> *@
 </div>
 </body>
